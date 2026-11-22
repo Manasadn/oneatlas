@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+$readme = @'
+# OneAtlas
 
-## Getting Started
+AI model discovery and intelligence platform. Discover, compare and evaluate AI models across labs and providers.
 
-First, run the development server:
+**Live demo:** https://oneatlas-rho.vercel.app
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> Model data (prices, latency, benchmark scores) is sample data seeded for demonstration. It is approximate and not a live feed.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Area | What it does |
+|---|---|
+| Model discovery | Search, filter by lab / provider / capability / type / license, sort by price, context window, release date, name, with pagination |
+| Model detail | Specs, modalities, capabilities, per-provider pricing table, benchmark scores with rank |
+| Comparison | Compare 2 to 4 models side by side, best value per row highlighted, shareable URL |
+| Rankings | Leaderboards per benchmark, filter by category or benchmark |
+| Labs and providers | Directory pages plus detail pages listing models, prices, latency and throughput |
+| Global search | Debounced navbar search (Ctrl+K) across models, labs and providers |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech stack
 
-## Learn More
+- Next.js 16 (App Router), React 19, TypeScript, TailwindCSS
+- Next.js Route Handlers for the API
+- PostgreSQL on Neon, Prisma ORM
+- Zod for request validation
+- Deployed on Vercel
 
-To learn more about Next.js, take a look at the following resources:
+## Architecture
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```mermaid
+flowchart LR
+  B[Browser] -->|client components fetch| A[Next.js API routes]
+  B -->|server components| P[Prisma]
+  A --> V[Zod validation]
+  V --> P
+  P --> D[(PostgreSQL / Neon)]
